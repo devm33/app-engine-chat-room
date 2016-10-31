@@ -7,7 +7,7 @@
     font-family: 'Helvetica';
     font-size: 20px;
     font-weight: bold;
-    background-color: #DC143C	; 
+    background-color: #DC143C	;
   }
 
   #chat {
@@ -22,14 +22,20 @@
     overflow: auto;
   }
 
+  .container{
+    display: flex;
+  }
+
   .message {
     margin: 1em 0;
   }
 </style>
 
-<div id="chat">
+<div id="chat" class="container">
   <div id="messages"></div>
-  <input disabled placeholder="Connecting..." id="newmessage"></input>
+  <input disabled placeholder="Connecting..." id="newmessage">
+</input>
+    <button type="button" class="chat" id=send>Send</input>
 </div>
 
 <!-- Imports jQuery -->
@@ -40,6 +46,7 @@
 
 <script>
   var messages = $('#messages');
+  // var newmessageform = $('#newmessageform')
   var newmessage = $('#newmessage');
 
   // Wire up the channel event handlers.
@@ -67,6 +74,13 @@ newmessage.on('keypress', function(e) {
     newmessage.val('');
   };
 });
+
+$("#send").click(function(){
+  $.post('/send', {data: newmessage.val()});
+  newmessage.val('');
+});
+
+
 
 // Force all focus to the input box.
 newmessage.on('blur', function(e) {
