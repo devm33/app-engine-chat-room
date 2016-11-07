@@ -52,8 +52,8 @@
     },
     'onmessage': function(m) {
       var msg = m.data;
-      // Replace all shruggies
-      msg = msg.replace('/shruggie', '¯\\_(ツ)_/¯');
+      // TODO Replace all instances of /bold
+     
       // Blindly append the message to the end of the element.
       messages.append('<p class="message">' + msg + '</p>');
     },
