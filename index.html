@@ -51,8 +51,11 @@
       newmessage.focus();
     },
     'onmessage': function(m) {
+      var msg = m.data;
+      // Replace all shruggies
+      msg = msg.replace('/shruggie', '¯\\_(ツ)_/¯');
       // Blindly append the message to the end of the element.
-      messages.append('<p class="message">' + m.data + '</p>');
+      messages.append('<p class="message">' + msg + '</p>');
     },
     'onerror': function() {}, // No-op.
     'onclose': function() {}, // No-op.
