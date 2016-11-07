@@ -7,6 +7,11 @@
     font-family: 'Helvetica';
     font-size: 20px;
     font-weight: bold;
+    background-color: green;
+  }
+
+  .container{
+    display: flex;
   }
 
   #chat {
@@ -28,7 +33,13 @@
 
 <div id="chat">
   <div id="messages"></div>
-  <input disabled placeholder="Connecting..." id="newmessage"></input>
+  <!-- <input disabled placeholder="Connecting..." id="newmessage"></input> -->
+  <div id="newmessageform" class="container" autocomplete="off">
+    <input id="newmessage" class="fill" placeholder="Send a Message">
+    <button type="submit" id="submit" onclick = "$.post('/send', {data: newmessage.val()});
+    newmessage.val('')" >Send</button>
+  </div>
+
 </div>
 
 <!-- Imports jQuery -->
@@ -39,14 +50,16 @@
 
 <script>
   var messages = $('#messages');
-  var newmessage = $('#newmessage');
+  var newmessageform = $('#newmessageform');
+  var newmessage = $('#newmessage')
+  var button = $('#submit')
 
   // Wire up the channel event handlers.
   var channel = new goog.appengine.Channel('{{ token }}');
   var handler = {
     'onopen': function() {
       // Let the chatting begin.
-      newmessage.attr('placeholder', 'Send a message');
+      newmessage.attr('placeholder', 'Send a Message');
       newmessage.attr('disabled', false);
       newmessage.focus();
     },
@@ -67,6 +80,13 @@ newmessage.on('keypress', function(e) {
   if (e.key === 'Enter' && newmessage.val() !== '') {
     $.post('/send', {data: newmessage.val()});
     newmessage.val('');
+  };
+});
+
+button.on('submit', function(e) {
+  if (newmessage.val() !== ''){
+    $.post('/send', {data: newmessage.val()});
+    newmessage.val('')
   };
 });
 
