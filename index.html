@@ -7,7 +7,7 @@
     font-family: 'Helvetica';
     font-size: 20px;
     font-weight: bold;
-    background-color: red;
+    background-color: white;
   }
 
   .container{
@@ -63,10 +63,22 @@
       newmessage.attr('disabled', false);
       newmessage.focus();
     },
+
     'onmessage': function(m) {
-      // Blindly append the message to the end of the element.
-      messages.append('<p class="message">' + m.data + '</p>');
+      var msg = m.data;
+      msg = msg.replace('/bold', '<b>bold</b>');
+      msg = msg.replace('/shruggie', '¯\\_(ツ)_/¯');
+
+      if(msg.includes('/green')) {
+        msg = msg.fontcolor('green').replace('/green', '')
+      };
+
+      if(msg.includes('/roll')) {
+        msg = msg.replace('/roll', 'You rolled a ' + Math.floor(Math.random() * 6));
+      }
+      messages.append('<p class="message">' + msg + '</p>');
     },
+
     'onerror': function() {}, // No-op.
     'onclose': function() {}, // No-op.
   };
@@ -83,6 +95,7 @@ newmessage.on('keypress', function(e) {
 button.on('submit', function(e) {
   if (newmessage.val() !== ''){
     $.post('/send', {data: newmessage.val()});
+
     newmessage.val('')
   };
 });
